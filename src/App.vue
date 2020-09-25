@@ -4,6 +4,7 @@
     <TodoList 
       :todoList="todoList" 
       :addTodoFn="addTodo" 
+      :deleteTodoFn="deleteTodo"
       :checkedTodoFn="checkedTodo"
     />
   </div>
@@ -43,6 +44,9 @@ export default {
         ...this.todoList,
         { id: Date.now(), isDone: false, ...todo }
       ];
+    },
+    deleteTodo(id) {
+      this.todoList = this.todoList.filter(el => el.id !== id);
     },
     checkedTodo(id, isDone) {
       this.todoList = this.todoList.map(el => el.id === id ? { ...el, isDone } : el);

@@ -1,17 +1,32 @@
 <template>
     <div class="todo-item" :class="{ 'todo-item__done': isDone }">
       <input 
+        v-if="!isEdit"
         class="todo-item__checkbox"
         type="checkbox" 
         :checked="isDone" 
         @change="onChange">
-      <div class="todo-item__content">
+      <div v-if="!isEdit" class="todo-item__content">
         <span>{{ name }}</span>
         <span>{{ description }}</span>
       </div>
-      <div class="todo-item__btn-container">
-        <button :disabled="isDone">&#9998;</button>
-        <button :disabled="isDone">&#128465;</button>
+      <div v-if="isEdit" class="todo-item__input-container">
+        <input v-model="updateTodo.name">
+        <input v-model="updateTodo.description">
+      </div>
+      <div v-if="!isEdit" class="todo-item__btn-container">
+        <button  
+          :disabled="isDone"
+          @click="editTodo"
+        >&#9998;</button>
+        <button 
+          :disabled="isDone" 
+          @click="deleteTodoFn(id)"
+        >&#128465;</button>
+      </div>
+      <div v-if="isEdit" class="todo-item__btn-container">
+        <button>&#10004;</button>
+        <button @click="cancelEditTodo">&#10006;</button>
       </div>
     </div>
 </template>
@@ -25,11 +40,24 @@ export default {
     isDone: Boolean,
     id: Number,
     checkedTodoFn: Function,
+    deleteTodoFn: Function,
+  },
+  data() {
+    return {
+      isEdit: true,
+      updateTodo: { name: this.name, description: this.description }
+    }
   },
   methods: {
-		onChange(e){
+		onChange(e) {
 			this.checkedTodoFn(this.id, e.target.checked);
 		},
+    editTodo() {
+      this.isEdit = true;
+    },
+    cancelEditTodo() {
+      this.isEdit = false;
+    },
   }
 }
 </script>
@@ -54,6 +82,16 @@ export default {
   .todo-item__content {
     display: flex;
     flex-grow: 3;
+  }
+
+  .todo-item__input-container {
+    display: flex;
+    justify-content: space-around;
+    flex-grow: 6;
+  }
+
+  .todo-item__input-container input {
+    width: 45%;
   }
 
   .todo-item__content span {

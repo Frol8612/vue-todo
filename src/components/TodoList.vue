@@ -14,6 +14,7 @@
         :isDone="item.isDone"
         :id="item.id" 
         :checkedTodoFn="checkedTodoFn"
+        :deleteTodoFn="deleteTodoFn"
       />
     </div>
   </div>
@@ -30,6 +31,7 @@ export default {
   props: {
     todoList: Array,
     addTodoFn: Function,
+    deleteTodoFn: Function,
     checkedTodoFn: Function,
   },
   data() {
