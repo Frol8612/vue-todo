@@ -11,8 +11,8 @@
         <span>{{ description }}</span>
       </div>
       <div v-if="isEdit" class="todo-item__input-container">
-        <input v-model="updateTodo.name">
-        <input v-model="updateTodo.description">
+        <input v-model="todo.name">
+        <input v-model="todo.description">
       </div>
       <div v-if="!isEdit" class="todo-item__btn-container">
         <button  
@@ -25,7 +25,7 @@
         >&#128465;</button>
       </div>
       <div v-if="isEdit" class="todo-item__btn-container">
-        <button>&#10004;</button>
+        <button @click="updateTodo">&#10004;</button>
         <button @click="cancelEditTodo">&#10006;</button>
       </div>
     </div>
@@ -39,13 +39,14 @@ export default {
     description: String,
     isDone: Boolean,
     id: Number,
-    checkedTodoFn: Function,
+    updateTodoFn: Function,
     deleteTodoFn: Function,
+    checkedTodoFn: Function,
   },
   data() {
     return {
-      isEdit: true,
-      updateTodo: { name: this.name, description: this.description }
+      isEdit: false,
+      todo: { name: this.name, description: this.description }
     }
   },
   methods: {
@@ -54,6 +55,10 @@ export default {
 		},
     editTodo() {
       this.isEdit = true;
+    },
+    updateTodo() {
+      this.updateTodoFn(this.id, this.todo);
+      this.isEdit = false;
     },
     cancelEditTodo() {
       this.isEdit = false;

@@ -4,6 +4,7 @@
     <TodoList 
       :todoList="todoList" 
       :addTodoFn="addTodo" 
+      :updateTodoFn="updateTodo"
       :deleteTodoFn="deleteTodo"
       :checkedTodoFn="checkedTodo"
     />
@@ -44,6 +45,9 @@ export default {
         ...this.todoList,
         { id: Date.now(), isDone: false, ...todo }
       ];
+    },
+    updateTodo(id, todo) {
+      this.todoList = this.todoList.map(el => el.id === id ? { ...el, ...todo } : el);
     },
     deleteTodo(id) {
       this.todoList = this.todoList.filter(el => el.id !== id);
