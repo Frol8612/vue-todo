@@ -1,26 +1,24 @@
 <template>
-    <div class="todo-item" :class="{ 'todo-item__done': isDone }">
+    <div class="todo-item" :class="{ 'todo-item__done': completed }">
       <input 
         v-if="!isEdit"
         class="todo-item__checkbox"
         type="checkbox" 
-        :checked="isDone" 
+        :checked="completed" 
         @change="onChange">
       <div v-if="!isEdit" class="todo-item__content">
-        <span>{{ name }}</span>
-        <span>{{ description }}</span>
+        <span>{{ title }}</span>
       </div>
       <div v-if="isEdit" class="todo-item__input-container">
-        <input v-model="todo.name">
-        <input v-model="todo.description">
+        <input v-model="todo.title">
       </div>
       <div v-if="!isEdit" class="todo-item__btn-container">
         <button  
-          :disabled="isDone"
+          :disabled="completed"
           @click="editTodo"
         >&#9998;</button>
         <button 
-          :disabled="isDone" 
+          :disabled="completed" 
           @click="deleteTodoFn(id)"
         >&#128465;</button>
       </div>
@@ -35,9 +33,8 @@
 export default {
   name: 'TodoList',
   props: {
-    name: String,
-    description: String,
-    isDone: Boolean,
+    title: String,
+    completed: Boolean,
     id: Number,
     updateTodoFn: Function,
     deleteTodoFn: Function,
@@ -46,7 +43,7 @@ export default {
   data() {
     return {
       isEdit: false,
-      todo: { name: this.name, description: this.description }
+      todo: { title: this.title }
     }
   },
   methods: {
@@ -80,23 +77,30 @@ export default {
   }
 
   .todo-item__checkbox {
-    flex-grow: 0.25;
+    width: 5%;
     border: 1px solid #000;
   }
 
   .todo-item__content {
     display: flex;
-    flex-grow: 3;
+    width: 80%;
+    overflow: hidden;
+  }
+
+  .todo-item__content span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .todo-item__input-container {
     display: flex;
     justify-content: space-around;
-    flex-grow: 6;
+    width: 85%;
   }
 
   .todo-item__input-container input {
-    width: 45%;
+    width: 100%;
   }
 
   .todo-item__content span {
@@ -106,7 +110,7 @@ export default {
   .todo-item__btn-container {
     display: flex;
     justify-content: space-around;
-    flex-grow: 0.5;
+    width: 15%;
   }
 
   .todo-item__btn-container button {

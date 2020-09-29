@@ -23,27 +23,22 @@ export default {
   },
   data() {
     return {
-      todoList: [
-        { 
-          id: Date.UTC(2020, 9, 21), 
-          name: 'One', 
-          description: 'One todo',
-          isDone: false,
-        },
-        { 
-          id: Date.UTC(2020, 9, 22),
-          name: 'Two', 
-          description: 'Two todo',
-          isDone: true,
-        }
-      ],
+      todoList: [],
     }
   },
+  async created() {
+    const todoList = await fetch('https://jsonplaceholder.typicode.com/todos')
+      .then(response => response.json())
+      .then(json => json);
+    
+    
+    this.todoList = todoList;
+  },
   methods: {
-    addTodo(todo) {
+    addTodo(title) {
       this.todoList = [
         ...this.todoList,
-        { id: Date.now(), isDone: false, ...todo }
+        { id: Date.now(), completed: false, title }
       ];
     },
     updateTodo(id, todo) {
@@ -52,8 +47,8 @@ export default {
     deleteTodo(id) {
       this.todoList = this.todoList.filter(el => el.id !== id);
     },
-    checkedTodo(id, isDone) {
-      this.todoList = this.todoList.map(el => el.id === id ? { ...el, isDone } : el);
+    checkedTodo(id, completed) {
+      this.todoList = this.todoList.map(el => el.id === id ? { ...el, completed } : el);
     }
   }
 }

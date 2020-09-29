@@ -1,17 +1,15 @@
 <template>
   <div class="todo-list">
     <div class="todo-list__form">
-      <input v-model="newTodo.name" placeholder="name" />
-      <input v-model="newTodo.description" placeholder="Description" />
+      <input v-model="title" placeholder="title" />
       <button @click="addTodo">&#10010;</button>
     </div>
     <div class="todo-list__container">
       <TodoItem 
         v-for="item in todoList" 
-        :key="item.name"
-        :name="item.name" 
-        :description="item.description"
-        :isDone="item.isDone"
+        :key="item.id"
+        :title="item.title"
+        :completed="item.completed"
         :id="item.id" 
         :updateTodoFn="updateTodoFn"
         :deleteTodoFn="deleteTodoFn"
@@ -38,17 +36,14 @@ export default {
   },
   data() {
     return {
-      newTodo: {
-        name: '',
-        description: '',
-      }
+        title: '',
     }
   },
   methods: {
     addTodo() {
-      if (this.newTodo.name && this.newTodo.description) {
-        this.addTodoFn(this.newTodo);
-        this.newTodo = { name: '', description: '' };
+      if (this.title) {
+        this.addTodoFn(this.title);
+        this.title = '';
       }
     },
   },
