@@ -35,11 +35,21 @@ export default {
     this.todoList = todoList;
   },
   methods: {
-    addTodo(title) {
-      this.todoList = [
-        ...this.todoList,
-        { id: Date.now(), completed: false, title }
-      ];
+    async addTodo(title) {
+      const todo = await fetch('https://jsonplaceholder.typicode.com/todos', {
+      method: 'POST',
+      body: JSON.stringify({
+        title,
+        userId: 1,
+      }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+    })
+      .then((response) => response.json())
+      .then(json => json);
+
+      this.todoList = [...this.todoList, todo];
     },
     updateTodo(id, todo) {
       this.todoList = this.todoList.map(el => el.id === id ? { ...el, ...todo } : el);
